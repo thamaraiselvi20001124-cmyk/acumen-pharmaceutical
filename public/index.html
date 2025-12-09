@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acumen - Job Management System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- Login Page -->
+    <div id="loginPage" class="page active">
+        <div class="login-container">
+            <div class="login-blobs">
+                <div class="blob blob-1"></div>
+                <div class="blob blob-2"></div>
+                <div class="blob blob-3"></div>
+            </div>
+
+            <div class="login-content">
+                <div class="login-header">
+                    <div class="logo-glow">
+                        <div class="logo"></div>
+                    </div>
+                    <h1 class="app-title">Acumen</h1>
+                    <p class="app-subtitle">pharmacetical private limited</p>
+                </div>
+
+                <!-- Login Form Card -->
+                <div style="max-width: 28rem; margin: 0 auto;">
+                    <form id="loginForm" onsubmit="handleLogin(event)"
+                        style="background: white; border-radius: 1.5rem; padding: 2.5rem; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); position: relative; overflow: hidden;">
+                        <!-- Gradient border effect -->
+                        <div
+                            style="position: absolute; inset: 0; border-radius: 1.5rem; padding: 2px; background: linear-gradient(135deg, #EC4899 0%, #8B5CF6 100%); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none;">
+                        </div>
+
+                        <h2
+                            style="font-size: 1.875rem; font-weight: 700; text-align: center; margin-bottom: 0.5rem; color: #111827;">
+                            Welcome Back</h2>
+                        <p style="text-align: center; color: #6B7280; margin-bottom: 2rem; font-size: 0.875rem;">Sign in
+                            to access your dashboard</p>
+
+                        <!-- Username Field -->
+                        <div style="margin-bottom: 1.5rem;">
+                            <label
+                                style="display: block; font-size: 0.875rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">
+                                <svg style="display: inline; width: 16px; height: 16px; margin-right: 0.5rem; vertical-align: middle;"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                                Username
+                            </label>
+                            <input type="text" id="username" placeholder="Enter your username" required
+                                style="width: 100%; padding: 0.75rem 1rem; border: 2px solid #E5E7EB; border-radius: 0.75rem; font-size: 0.875rem; transition: all 0.2s; outline: none;"
+                                onfocus="this.style.borderColor='#DC2626'; this.style.boxShadow='0 0 0 3px rgba(220, 38, 38, 0.1)'"
+                                onblur="this.style.borderColor='#E5E7EB'; this.style.boxShadow='none'">
+                        </div>
+
+                        <!-- Password Field -->
+                        <div style="margin-bottom: 1.5rem;">
+                            <label
+                                style="display: block; font-size: 0.875rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">
+                                <svg style="display: inline; width: 16px; height: 16px; margin-right: 0.5rem; vertical-align: middle;"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                </svg>
+                                Password
+                            </label>
+                            <input type="password" id="password" placeholder="Enter your password" required
+                                style="width: 100%; padding: 0.75rem 1rem; border: 2px solid #E5E7EB; border-radius: 0.75rem; font-size: 0.875rem; transition: all 0.2s; outline: none;"
+                                onfocus="this.style.borderColor='#DC2626'; this.style.boxShadow='0 0 0 3px rgba(220, 38, 38, 0.1)'"
+                                onblur="this.style.borderColor='#E5E7EB'; this.style.boxShadow='none'">
+                        </div>
+
+                        <!-- Error Message -->
+                        <div id="loginError"
+                            style="display: none; background: #FEF2F2; border: 1px solid #FCA5A5; color: #DC2626; padding: 0.75rem; border-radius: 0.5rem; margin-bottom: 1.5rem; font-size: 0.875rem; text-align: center;">
+                        </div>
+
+                        <!-- Login Button -->
+                        <button type="submit"
+                            style="width: 100%; padding: 0.875rem; background: linear-gradient(135deg, #DC2626 0%, #991B1B 100%); color: white; border: none; border-radius: 0.75rem; font-weight: 600; font-size: 0.875rem; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 6px -1px rgba(220, 38, 38, 0.3);"
+                            onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 12px -1px rgba(220, 38, 38, 0.4)'"
+                            onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px -1px rgba(220, 38, 38, 0.3)'">
+                            <svg style="display: inline; width: 18px; height: 18px; margin-right: 0.5rem; vertical-align: middle;"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                                <polyline points="10 17 15 12 10 7"></polyline>
+                                <line x1="15" y1="12" x2="3" y2="12"></line>
+                            </svg>
+                            Sign In
+                        </button>
+
+                    </form>
+                </div>
+
+                <p class="footer-text" style="margin-top: 2rem;">© 2025 Acumen Inc. • Authorized Access Only</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="adminPage" class="page">
+        <div class="dashboard-layout">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <div class="sidebar-logo">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="white">
+                            <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                        </svg>
+                    </div>
+                    <span class="sidebar-title">JobFlow</span>
+                </div>
+
+                <nav class="sidebar-nav">
+                    <button class="nav-item active" onclick="showAdminView('dashboard')">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <rect x="3" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="14" width="7" height="7"></rect>
+                            <rect x="3" y="14" width="7" height="7"></rect>
+                        </svg>
+                        <span>Dashboard</span>
+                    </button>
+                    <button class="nav-item" onclick="showAdminView('create')">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        <span>Create Job</span>
+                    </button>
+
+                    <!-- Monthly Navigation -->
+                    <div style="padding: 0.75rem 0.5rem; margin-top: 0.5rem;">
+                        <div
+                            style="font-size: 0.75rem; font-weight: 600; color: #9CA3AF; text-transform: uppercase; margin-bottom: 0.5rem; padding: 0 0.25rem;">
+                            Monthly Jobs</div>
+                        <button class="nav-item" onclick="showMonthlyJobs('2025-12')">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg>
+                            <span>Dec 2025</span>
+                        </button>
+                        <button class="nav-item" onclick="showMonthlyJobs('2026-01')">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg>
+                            <span>Jan 2026</span>
+                        </button>
+                        <button class="nav-item" onclick="showMonthlyJobs('2026-02')">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg>
+                            <span>Feb 2026</span>
+                        </button>
+                        <button class="nav-item" onclick="showMonthlyJobs('2026-03')">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg>
+                            <span>Mar 2026</span>
+                        </button>
+                        <button class="nav-item" onclick="showMonthlyJobs('2026-04')">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg>
+                            <span>Apr 2026</span>
+                        </button>
+                        <button class="nav-item" onclick="showMonthlyJobs('2026-05')">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg>
+                            <span>May 2026</span>
+                        </button>
+                    </div>
+                </nav>
+
+                <div class="sidebar-footer">
+                    <button class="nav-item" onclick="logout()">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                            <polyline points="16 17 21 12 16 7"></polyline>
+                            <line x1="21" y1="12" x2="9" y2="12"></line>
+                        </svg>
+                        <span>Logout</span>
+                    </button>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="main-content">
+                <!-- Dashboard View -->
+                <div id="dashboardView" class="view active">
+                    <div class="page-header">
+                        <div>
+                            <h1>Dashboard</h1>
+                            <p class="subtitle">Welcome back! Here's an overview of your jobs.</p>
+                        </div>
+                        <button class="btn btn-primary" onclick="showAdminView('create')">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                            Create Job
+                        </button>
+                    </div>
+
+                    <!-- Stats Cards -->
+                    <div class="stats-grid">
+                        <div class="stat-card stat-total">
+                            <div class="stat-content">
+                                <div class="stat-label">Total Jobs</div>
+                                <div class="stat-value" id="totalJobs">0</div>
+                            </div>
+                            <div class="stat-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                    <path
+                                        d="M3 3h7v7H3V3zm4 2H5v3h2V5zm7-2h7v7h-7V3zm4 2h-2v3h2V5zM3 14h7v7H3v-7zm4 2H5v3h2v-3zm11-2h7v7h-7v-7zm4 2h-2v3h2v-3z" />
+                                </svg>
+                            </div>
+                        </div>
+
+                        <div class="stat-card stat-pending">
+                            <div class="stat-content">
+                                <div class="stat-label">Pending</div>
+                                <div class="stat-value" id="pendingJobs">0</div>
+                            </div>
+                            <div class="stat-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                    <path
+                                        d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.2 3.2.8-1.3-4.5-2.7V7z" />
+                                </svg>
+                            </div>
+                        </div>
+
+                        <div class="stat-card stat-progress">
+                            <div class="stat-content">
+                                <div class="stat-label">In Progress</div>
+                                <div class="stat-value" id="ongoingJobs">0</div>
+                            </div>
+                            <div class="stat-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 4V2A10 10 0 0 0 2 12h2a8 8 0 0 1 8-8z" />
+                                </svg>
+                            </div>
+                        </div>
+
+                        <div class="stat-card stat-completed">
+                            <div class="stat-content">
+                                <div class="stat-label">Completed</div>
+                                <div class="stat-value" id="completedJobs">0</div>
+                            </div>
+                            <div class="stat-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Jobs -->
+                    <div class="section-header">
+                        <h2>Recent Jobs</h2>
+                        <a href="#" class="view-all">View all →</a>
+                    </div>
+
+                    <div class="jobs-grid" id="recentJobsList">
+                        <div class="empty-state">
+                            <p>No jobs yet. Create your first job to get started!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Create Job View -->
+                <div id="createView" class="view">
+                    <div class="page-header">
+                        <div>
+                            <h1>Create New Job</h1>
+                            <p class="subtitle">Fill in the details below to create a new design task</p>
+                        </div>
+                    </div>
+
+                    <form id="createJobForm" class="job-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Job Title</label>
+                                <input type="text" name="title" placeholder="e.g. Summer Sale Banner" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Job Type</label>
+                                <select name="job_type" required>
+                                    <option value="">Select Type</option>
+                                    <option value="Label">Label</option>
+                                    <option value="Carton">Carton</option>
+                                    <option value="Foil">Foil</option>
+                                    <option value="Poster Design">Poster Design</option>
+                                    <option value="Other Design">Other Design</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Brand Name</label>
+                            <input type="text" name="brand_name" placeholder="Brand Name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Brand Instructions</label>
+                            <textarea name="brand_guidelines" placeholder="Detailed instructions..."
+                                required></textarea>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Reference Files</label>
+                                <div class="file-upload">
+                                    <input type="file" id="brandFiles" multiple accept="image/*,.pdf,.cdr">
+                                    <label for="brandFiles" class="file-upload-label">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                            <polyline points="17 8 12 3 7 8"></polyline>
+                                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                                        </svg>
+                                        <span>Click to upload</span>
+                                        <span class="file-count" id="brandFilesCount">0 files selected</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Marketing Files</label>
+                                <div class="file-upload">
+                                    <input type="file" id="marketFiles" multiple accept="image/*,.pdf,.cdr">
+                                    <label for="marketFiles" class="file-upload-label">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                            <polyline points="17 8 12 3 7 8"></polyline>
+                                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                                        </svg>
+                                        <span>Click to upload</span>
+                                        <span class="file-count" id="marketFilesCount">0 files selected</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-footer">
+                            <button type="button" class="btn btn-secondary"
+                                onclick="showAdminView('dashboard')">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Create Job</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Monthly Jobs View -->
+                <div id="monthlyView" class="view">
+                    <div class="page-header">
+                        <div>
+                            <h1 id="monthlyTitle">Monthly Jobs</h1>
+                            <p class="subtitle">Simple list of jobs for the selected month</p>
+                        </div>
+                        <button class="btn btn-secondary" onclick="showAdminView('dashboard')">← Back to
+                            Dashboard</button>
+                    </div>
+
+                    <div
+                        style="background: white; border: 1px solid #E5E7EB; border-radius: 0.75rem; overflow: hidden;">
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <thead style="background: #F9FAFB; border-bottom: 2px solid #E5E7EB;">
+                                <tr>
+                                    <th
+                                        style="padding: 1rem; text-align: left; font-size: 0.875rem; font-weight: 700; color: #111827; width: 120px;">
+                                        Job ID</th>
+                                    <th
+                                        style="padding: 1rem; text-align: left; font-size: 0.875rem; font-weight: 700; color: #111827;">
+                                        Brand Name</th>
+                                    <th
+                                        style="padding: 1rem; text-align: left; font-size: 0.875rem; font-weight: 700; color: #111827;">
+                                        Job Type</th>
+                                    <th
+                                        style="padding: 1rem; text-align: left; font-size: 0.875rem; font-weight: 700; color: #111827; width: 120px;">
+                                        Created</th>
+                                </tr>
+                            </thead>
+                            <tbody id="monthlyJobsList">
+                                <tr>
+                                    <td colspan="4" style="padding: 3rem; text-align: center; color: #9CA3AF;">
+                                        Select a month to view jobs
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Designer Dashboard -->
+    <div id="designerPage" class="page">
+        <div class="dashboard-layout">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <div class="sidebar-logo">D</div>
+                    <span class="sidebar-title">JobFlow</span>
+                </div>
+                <nav class="sidebar-nav">
+                    <button class="nav-item active" onclick="showDesignerView('tasks')">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                        </svg>
+                        <span>My Tasks</span>
+                    </button>
+                    <button class="nav-item" onclick="showDesignerView('completed')">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                        <span>Completed</span>
+                        <span id="completedCount"
+                            style="margin-left: auto; background: #DCFCE7; color: #16A34A; padding: 0.125rem 0.5rem; border-radius: 0.25rem; font-size: 0.75rem; font-weight: 600;">0</span>
+                    </button>
+                </nav>
+                <div class="sidebar-footer">
+                    <button class="nav-item" onclick="logout()">
+                        <span>Logout</span>
+                    </button>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="main-content">
+                <!-- My Tasks View -->
+                <div id="tasksView" class="view active">
+                    <div class="page-header">
+                        <div>
+                            <h1>Designer Dashboard</h1>
+                            <p class="subtitle">View assigned jobs, download assets, and upload completed work</p>
+                        </div>
+                    </div>
+
+                    <div class="designer-content">
+                        <div class="job-selector-card">
+                            <h3>Select a Job</h3>
+                            <p>Choose a job to view details and work on</p>
+                            <select id="designerJobSelect" class="job-select" onchange="loadJobDetails(this.value)">
+                                <option value="">Select a job...</option>
+                            </select>
+                        </div>
+
+                        <div id="jobDetailsContainer" class="job-details-container" style="display:none;">
+                            <!-- Job details will be loaded here dynamically -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Completed Tasks View -->
+                <div id="completedView" class="view">
+                    <div class="page-header">
+                        <div>
+                            <h1>Completed Tasks</h1>
+                            <p class="subtitle">View all your completed jobs</p>
+                        </div>
+                    </div>
+
+                    <div
+                        style="background: white; border: 1px solid #E5E7EB; border-radius: 0.75rem; overflow: hidden;">
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <thead style="background: #F9FAFB; border-bottom: 1px solid #E5E7EB;">
+                                <tr>
+                                    <th
+                                        style="padding: 0.75rem 1rem; text-align: left; font-size: 0.875rem; font-weight: 600; color: #374151;">
+                                        No.</th>
+                                    <th
+                                        style="padding: 0.75rem 1rem; text-align: left; font-size: 0.875rem; font-weight: 600; color: #374151;">
+                                        Job ID</th>
+                                    <th
+                                        style="padding: 0.75rem 1rem; text-align: left; font-size: 0.875rem; font-weight: 600; color: #374151;">
+                                        Title</th>
+                                    <th
+                                        style="padding: 0.75rem 1rem; text-align: left; font-size: 0.875rem; font-weight: 600; color: #374151;">
+                                        Type</th>
+                                    <th
+                                        style="padding: 0.75rem 1rem; text-align: left; font-size: 0.875rem; font-weight: 600; color: #374151;">
+                                        Brand</th>
+                                    <th
+                                        style="padding: 0.75rem 1rem; text-align: left; font-size: 0.875rem; font-weight: 600; color: #374151;">
+                                        Completed Date</th>
+                                    <th
+                                        style="padding: 0.75rem 1rem; text-align: left; font-size: 0.875rem; font-weight: 600; color: #374151;">
+                                        Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="completedTasksList">
+                                <tr>
+                                    <td colspan="7" style="padding: 3rem; text-align: center; color: #9CA3AF;">
+                                        No completed tasks yet
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
