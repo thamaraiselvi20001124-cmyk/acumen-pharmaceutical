@@ -6,6 +6,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
 import { openDb, initDb } from './database.js';
+import { v2 as cloudinary } from 'cloudinary';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -20,23 +21,17 @@ app.use(express.json());
 const publicDir = path.join(__dirname, '..', 'public');
 app.use(express.static(publicDir));
 
-// Ensure uploads directory exists
-const uploadsDir = path.join(__dirname, 'uploads');
-if (!fs.existsSync(uploadsDir)) {
-    fs.mkdirSync(uploadsDir);
-}
-app.use('/uploads', express.static(uploadsDir));
+// Configure Cloudinary
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME || 'dcqnjidr37',
+    api_key: process.env.CLOUDINARY_API_KEY || '114248133699389',
+    api_secret: process.env.CLOUDINARY_API_SECRET || 'rNhulaHRjZDelW2huLsXuOPiz3Q'
+});
 
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, uploadsDir)
-    },
-    filename: function (req, file, cb) {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
-        cb(null, uniqueSuffix + '-' + file.originalname)
-    }
-})
-const upload = multer({ storage: storage })
+// Use memory storage for temporary file handling
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
 
 // Routes
 
@@ -52,6 +47,25 @@ app.get('/api/jobs', async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+
+
+// Helper function to upload to Cloudinary
+const uploadToCloudinary = (buffer, filename) => {
+    return new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+            {
+                folder: 'acumen-pharmaceutical',
+                resource_type: 'auto',
+                public_id: `${Date.now()}-${filename.replace(/\.[^/.]+$/, '')}`,
+            },
+            (error, result) => {
+                if (error) reject(error);
+                else resolve(result);
+            }
+        );
+        uploadStream.end(buffer);
+    });
+};
 
 app.post('/api/jobs', upload.fields([{ name: 'brandFiles', maxCount: 5 }, { name: 'marketFiles', maxCount: 5 }]), async (req, res) => {
     try {
@@ -70,19 +84,21 @@ app.post('/api/jobs', upload.fields([{ name: 'brandFiles', maxCount: 5 }, { name
         // Update unique ID
         await db.run('UPDATE jobs SET job_unique_id = ? WHERE id = ?', [jobUniqueId, jobId]);
 
-        // Handle files
-        // brandFiles
+        // Handle files - Upload to Cloudinary
+        // brandFiles (reference files)
         if (req.files && req.files['brandFiles']) {
             for (let file of req.files['brandFiles']) {
+                const cloudinaryResult = await uploadToCloudinary(file.buffer, file.originalname);
                 await db.run('INSERT INTO files (job_id, file_type, file_path, file_name) VALUES (?, ?, ?, ?)',
-                    [jobId, 'reference', file.filename, file.originalname]);
+                    [jobId, 'reference', cloudinaryResult.secure_url, file.originalname]);
             }
         }
-        // marketFiles
+        // marketFiles (marketing files)
         if (req.files && req.files['marketFiles']) {
             for (let file of req.files['marketFiles']) {
+                const cloudinaryResult = await uploadToCloudinary(file.buffer, file.originalname);
                 await db.run('INSERT INTO files (job_id, file_type, file_path, file_name) VALUES (?, ?, ?, ?)',
-                    [jobId, 'marketed', file.filename, file.originalname]);
+                    [jobId, 'marketed', cloudinaryResult.secure_url, file.originalname]);
             }
         }
 
@@ -92,6 +108,7 @@ app.post('/api/jobs', upload.fields([{ name: 'brandFiles', maxCount: 5 }, { name
         res.status(500).json({ error: error.message });
     }
 });
+
 
 app.put('/api/jobs/:id/status', async (req, res) => {
     try {
